@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic 100 Challenges</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow-x: hidden;
+            color: var(--light);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: rgba(45, 52, 54, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
+        }
+        
+        h1 {
+            color: var(--accent);
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        #challengeDisplay {
+            font-size: 1.8rem;
+            margin: 40px 0;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #challengeDisplay::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.8s ease;
+            opacity: 0;
+        }
+        
+        #generateBtn {
+            background: linear-gradient(45deg, var(--accent), #e84393);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transform: translateZ(0);
+        }
+        
+        #generateBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e84393, var(--accent));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        #generateBtn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        #generateBtn:hover::before {
+            opacity: 1;
+        }
+        
+        #generateBtn:active {
+            transform: translateY(2px) scale(0.98);
+        }
+        
+        .effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            animation: float 1.5s ease-out forwards;
+            font-size: 2rem;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-150px) rotate(360deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent);
+            opacity: 0;
+            z-index: 5;
+            animation: confetti 3s ease-out forwards;
+        }
+        
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 0.8s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(253, 121, 168, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(253, 121, 168, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(253, 121, 168, 0);
+            }
+        }
+        
+        .glow {
+            animation: glow 1s ease-out;
+        }
+        
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 30px 20px rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .challenge-text {
+            animation: textPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes textPop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #challengeDisplay {
+                font-size: 1.4rem;
+                min-height: 150px;
+                padding: 20px;
+            }
+            
+            #generateBtn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>100 Fun Challenges</h1>
+        <div id="challengeDisplay">Ready for a challenge? Click the button below!</div>
+        <button id="generateBtn">Generate Challenge!</button>
+    </div>
+
+    <script>
+        const challenges = [
+            "Do 10 jumping jacks like a kangaroo!",
+            "Sing your favorite song in an opera voice",
+            "Dance like you're in a music video for 30 seconds",
+            "Tell a terrible joke to the next person you see",
+            "Try to lick your nose (bonus points if you succeed!)",
+            "Walk like a penguin for the next minute",
+            "Speak like a pirate for the next 3 sentences",
+            "Give yourself a double high five",
+            "Try to touch your toes while humming your national anthem",
+            "Spin around 7 times and try to walk in a straight line",
+            "Pretend you're a flamingo and stand on one leg for 30 seconds",
+            "Do your best impression of a famous movie quote",
+            "Balance a spoon on your nose for as long as you can",
+            "Make up a rap about what you ate for breakfast",
+            "Do the robot dance to a classical music tune in your head",
+            "Try to say 'she sells seashells' 5 times fast",
+            "Air guitar your favorite song for 15 seconds",
+            "Act like a gorilla beating its chest",
+            "Try to wiggle your eyebrows independently",
+            "Make a face that would scare a baby (but don't actually scare any babies!)",
+            "Do 10 squats like a sumo wrestler",
+            "Try to touch your elbow to your knee (opposite sides!)",
+            "Hop on one foot while rubbing your belly",
+            "Say 'red lorry, yellow lorry' 5 times fast",
+            "Do your best impression of a jellyfish swimming",
+            "Try to cross your eyes and then uncross them slowly",
+            "Whistle the theme song to your favorite childhood show",
+            "Make a paper airplane and try to fly it across the room",
+            "Read the last text you received in a dramatic Shakespearean voice",
+            "Stand on one leg with your eyes closed for 15 seconds (be careful!)",
+            "Create a story where every word starts with the letter 'B'",
+            "Try to say 'Irish wristwatch' 3 times fast",
+            "Do your best impression of a toddler taking their first steps",
+            "Draw your favorite animal with your eyes closed",
+            "Do your best impression of a politician giving a speech",
+            "Try to name all the colors in a box of crayons in 20 seconds",
+            "Invent a secret handshake with an imaginary friend",
+            "Juggle three imaginary balls while counting backwards from 20",
+            "Do your best impression of a sports commentator for your morning routine",
+            "Write your name in the air with your foot",
+            "Do your best impression of a game show host revealing a prize",
+            "Try to count backwards from 50 by 3s",
+            "Do your best impression of a villain laughing evilly",
+            "Name all the Harry Potter houses in 10 seconds (or make up your own!)",
+            "Do your best impression of a weather reporter during a hurricane",
+            "Try to recite the alphabet without using your lips",
+            "Do your best impression of your favorite teacher",
+            "Name all the planets in our solar system in order (bonus: include Pluto!)",
+            "Do your best impression of SpongeBob laughing",
+            "Try to say 'Peter Piper picked a peck' 5 times fast",
+            "Strike a superhero pose and hold it for 10 seconds",
+            "Name 5 countries that start with 'S' in 15 seconds",
+            "Do your best impression of Santa's 'Ho Ho Ho'",
+            "Say the days of the week backwards as fast as you can",
+            "Act like you just saw a ghost (dramatic version!)",
+            "Name 10 different ice cream flavors in 10 seconds",
+            "Do your best impression of someone waking up with the worst bedhead",
+            "Name 5 pizza toppings you've never tried but would be willing to",
+            "Act like you just won the lottery (but found out you lost the ticket)",
+            "Name 3 pasta shapes that sound like they could be dinosaur names",
+            "Do your best impression of someone who just found out they're royalty",
+            "Name all the letters with straight lines only (no curves!)",
+            "Act like you're trying to understand advanced calculus",
+            "Name 5 dog breeds that would make terrible secret agents",
+            "Do your best impression of someone who just bit into a lemon",
+            "Name 5 colors that would look terrible on a car",
+            "Do your best impression of a robot trying to understand human emotions",
+            "Name 5 sports that would be better if played underwater",
+            "Do your best impression of an alien trying human food for the first time",
+            "Name 5 musical instruments that would be hard to play with mittens on",
+            "Do your best pirate impression ordering at a fast food restaurant",
+            "Name 5 vegetables that sound like they could be names of rock bands",
+            "Do your best impression of a cowboy in a library",
+            "Name 5 car brands as if they were names of racehorses",
+            "Do your best impression of a vampire who just tasted garlic",
+            "Name 5 social media platforms as if they were types of cereal",
+            "Do your best zombie impression trying to use a smartphone",
+            "Name 5 trees as if they were names of wizards",
+            "Do your best impression of a mummy trying to do yoga",
+            "Name 5 body parts that would make funny names for pets",
+            "Do your best impression of a ghost trying to scare a stoic person",
+            "Name 5 kitchen appliances as if they were names of heavy metal bands",
+            "Do your best impression of a witch whose spell backfired",
+            "Name 5 flying animals that would be terrible pilots",
+            "Do your best impression of a fairy with a broken wing",
+            "Name 5 drinks that would be terrible cocktail names",
+            "Do your best impression of a unicorn discovering it's actually a goat",
+            "Name 5 square things that would be funny if they were round",
+            "Do your best impression of a dragon with a sore throat",
+            "Name 5 round things that would be terrifying if they were square",
+            "Strike a superhero landing pose and freeze for 5 seconds",
+            "Name 5 green things that would look better in pink",
+            "Do your best impression of a secret agent who's terrible at being sneaky",
+            "Name 5 blue things that would be confusing if they were red",
+            "Do your best impression of a mad scientist whose experiment just worked",
+            "Name 5 red things that would be alarming if they were green",
+            "Do your best impression of a time traveler from the 1800s seeing a smartphone",
+            "Name 5 yellow things that would be depressing if they were gray",
+            "Do your best impression of a superhero sidekick who's actually running the show"
+        ];
+
+        const button = document.getElementById('generateBtn');
+        const display = document.getElementById('challengeDisplay');
+        const body = document.body;
+        const colors = ['#6c5ce7', '#fd79a8', '#00b894', '#0984e3', '#e17055', '#d63031', '#fdcb6e'];
+        const emojis = ['🌟', '🎉', '✨', '💫', '🔥', '🎊', '🌈', '⚡', '🎈', '🍕', '🦄', '🚀', '👑', '🎸', '🍩'];
+
+        button.addEventListener('click', () => {
+            // Get random challenge
+            const randomIndex = Math.floor(Math.random() * challenges.length);
+            const randomChallenge = challenges[randomIndex];
+            
+            // Display challenge with animation
+            display.classList.remove('challenge-text');
+            void display.offsetWidth; // Trigger reflow
+            display.textContent = randomChallenge;
+            display.classList.add('challenge-text');
+            
+            // Create effects
+            createEmojiEffects();
+            createConfetti();
+            changeBackground();
+            animateChallenge();
+            pulseButton();
+        });
+
+        function createEmojiEffects() {
+            for (let i = 0; i < 15; i++) {
+                const effect = document.createElement('div');
+                effect.className = 'effect';
+                effect.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                effect.style.left = Math.random() * 100 + 'vw';
+                effect.style.top = (Math.random() * 20 + 70) + 'vh';
+                effect.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                effect.style.animationDuration = (Math.random() * 0.5 + 1) + 's';
+                document.body.appendChild(effect);
+                
+                setTimeout(() => {
+                    effect.remove();
+                }, 2000);
+            }
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        function changeBackground() {
+            const color1 = colors[Math.floor(Math.random() * colors.length)];
+            let color2 = colors[Math.floor(Math.random() * colors.length)];
+            while (color2 === color1) {
+                color2 = colors[Math.floor(Math.random() * colors.length)];
+            }
+            body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+        }
+
+        function animateChallenge() {
+            display.classList.add('pulse');
+            display.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Shine effect
+            display.classList.remove('glow');
+            void display.offsetWidth; // Trigger reflow
+            display.classList.add('glow');
+            
+            setTimeout(() => {
+                display.classList.remove('pulse');
+            }, 800);
+        }
+
+        function pulseButton() {
+            button.classList.add('pulse');
+            setTimeout(() => {
+                button.classList.remove('pulse');
+            }, 800);
+        }
+
+        // Initial animation
+        setTimeout(() => {
+            button.classList.add('pulse');
+        }, 1000);
+    </script>
+</body>
+</html>
